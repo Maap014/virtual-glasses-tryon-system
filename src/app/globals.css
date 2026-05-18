@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  /* Breakpoints */
+  --breakpoint-300: 300px;
+  --breakpoint-360: 360px;
+  --breakpoint-390: 390px;
+  --breakpoint-425: 425px;
+  --breakpoint-480: 480px;
+  --breakpoint-560: 560px;
+  --breakpoint-640: 640px;
+  --breakpoint-768: 768px;
+  --breakpoint-880: 880px;
+  --breakpoint-960: 960px;
+  --breakpoint-1024: 1024px;
+  --breakpoint-1180: 1180px;
+  --breakpoint-1240: 1240px;
+  --breakpoint-1300: 1300px;
+  --breakpoint-1400: 1400px;
+  --breakpoint-1600: 1600px;
+
+  /* LIGHT MODE */
+  --color-background: #f6f6f2;
+  --color-foreground: #111111;
+
+  --color-primary: #b8ffee;
+  --color-primary-dark: #8ff2db;
+
+  --color-secondary: #1d1d1d;
+
+  --color-card: #ffffff;
+  --color-muted: #d9d9d9;
+  --color-border: #e7e7e7;
+}
+
+/* DARK MODE VARIABLES */
+.dark {
+  --color-background: #0f0f0f;
+  --color-foreground: #f5f5f5;
+
+  --color-primary: #8ff2db;
+  --color-primary-dark: #67dbc1;
+
+  --color-secondary: #ffffff;
+
+  --color-card: #1a1a1a;
+  --color-muted: #2a2a2a;
+  --color-border: #333333;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
