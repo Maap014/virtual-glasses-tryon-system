@@ -55,6 +55,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #ffffff;
 }
 
 .hidden-scrollbar::-webkit-scrollbar {
@@ -67,4 +68,18 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
   overflow: -moz-scrollbars-none;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 1rem));
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
 }

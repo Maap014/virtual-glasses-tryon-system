@@ -6,11 +6,10 @@ export const NavBar = () => {
   const navItems: NavBarProps[] = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
-    { name: "Categories", href: "/categories" },
   ];
 
   return (
-    <div className="relative">
+    <div className=" sticky top-0 z-20">
       <DesktopNavbar navItems={navItems} className="hidden 768:flex " />
       <MobileNavbar navItems={navItems} className="block 768:hidden" />
     </div>
