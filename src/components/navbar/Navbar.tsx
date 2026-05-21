@@ -1,5 +1,17 @@
-import React from "react";
+import { DesktopNavbar } from "./DesktopNavbar";
+import { NavBarProps } from "@/types";
+import { MobileNavbar } from "./MobileNavbar";
 
 export const NavBar = () => {
-  return <div>NavBar</div>;
+  const navItems: NavBarProps[] = [
+    { name: "Home", href: "/" },
+    { name: "Shop", href: "/shop" },
+  ];
+
+  return (
+    <div className=" sticky top-0 z-20">
+      <DesktopNavbar navItems={navItems} className="hidden 768:flex " />
+      <MobileNavbar navItems={navItems} className="block 768:hidden" />
+    </div>
+  );
 };
