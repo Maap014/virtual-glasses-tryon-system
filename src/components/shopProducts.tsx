@@ -106,43 +106,42 @@ export const ShopProducts = () => {
           ))}
         </div>
       </div>
-      <section className="h-[80vh] overflow-y-auto hidden-scrollbar">
-        <div className="grid 560:grid-cols-2 880:grid-cols-3 1024:grid-cols-3 1240:grid-cols-4 gap-8 mt-10">
-          {products.map((product) => (
-            <div key={product.id} className="group">
-              <div className="relative overflow-hidden rounded-3xl h-80 bg-card">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
 
-                <button className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-primary hover:bg-primary-dark transition-colors rounded-full px-6 py-3 text-sm font-medium cursor-pointer">
-                  Try Virtually
+      <section className="grid 560:grid-cols-2 880:grid-cols-3 1024:grid-cols-3 1240:grid-cols-4 gap-8 mt-10">
+        {products.map((product) => (
+          <div key={product.id} className="group">
+            <div className="relative overflow-hidden rounded-3xl h-80 bg-card">
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+
+              <button className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-primary hover:bg-primary-dark transition-colors rounded-full px-6 py-3 text-sm font-medium cursor-pointer">
+                Try Virtually
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-2 justify-between mt-5">
+              <div className="flex justify-between gap-2.5 ">
+                <h3 className=" text-lg 768:text-xl font-semibold">
+                  {product.name}
+                </h3>
+                <p className="text-lg 768:text-xl font-medium">
+                  {product.price}
+                </p>
+              </div>
+
+              <div className="flex justify-between gap-2">
+                <p className="text-foreground/60 mt-1">Premium Eyewear</p>
+                <button className=" bg-primary hover:bg-primary-dark transition-colors rounded-3xl px-5 py-2 text-sm font-medium cursor-pointer">
+                  Add
                 </button>
               </div>
-
-              <div className="flex flex-col gap-2 justify-between mt-5">
-                <div className="flex justify-between gap-2.5 ">
-                  <h3 className=" text-lg 768:text-xl font-semibold">
-                    {product.name}
-                  </h3>
-                  <p className="text-lg 768:text-xl font-medium">
-                    {product.price}
-                  </p>
-                </div>
-
-                <div className="flex justify-between gap-2">
-                  <p className="text-foreground/60 mt-1">Premium Eyewear</p>
-                  <button className=" bg-primary hover:bg-primary-dark transition-colors rounded-3xl px-5 py-2 text-sm font-medium cursor-pointer">
-                    Add
-                  </button>
-                </div>
-              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </section>
       <section
         ref={experience}
