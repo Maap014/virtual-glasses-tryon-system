@@ -9,7 +9,7 @@ export const NavBar = () => {
   ];
 
   return (
-    <div className=" sticky top-0 z-20">
+    <div className=" sticky top-0 z-50">
       <DesktopNavbar navItems={navItems} className="hidden 768:flex " />
       <MobileNavbar navItems={navItems} className="block 768:hidden" />
     </div>

@@ -4,6 +4,7 @@ import heroImage from "../assets/female_short_hair.png";
 import leftImage from "../assets/male_on_glasses.png";
 import rightImage from "../assets/female_long_hair_glasses.png";
 import { EyeWearCarousel } from "@/components/eyeWearCarousel";
+import Link from "next/link";
 
 const Home = () => {
   return (
@@ -11,7 +12,7 @@ const Home = () => {
       <div className="relative z-10">
         <div className="pl-6 768:pl-12 1024:pl-20">
           <div className="flex items-center">
-            <p className="text-base pr-2 text-foreground/60 tracking-wide mb-4">
+            <p className="text-base pr-2 tracking-[0.3em] text-foreground/60  mb-4">
               OUR VISION
             </p>
             <hr className="w-[10%] max-w-28 min-w-16 border-foreground/30" />
@@ -98,9 +99,11 @@ const Home = () => {
                 ANYWHERE!
               </h2>
 
-              <button className="mt-6 bg-primary hover:bg-primary-dark text-sm 560:text-base  rounded-full px-5 560:px-8 py-2.5 560:py-4 w-full cursor-pointer ">
-                SHOP NOW
-              </button>
+              <Link href="/shop">
+                <button className="mt-6 bg-primary hover:bg-primary-dark text-sm 560:text-base  rounded-full px-5 560:px-8 py-2.5 560:py-4 w-full cursor-pointer ">
+                  SHOP NOW
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -130,7 +133,7 @@ const Home = () => {
         <div className="grid grid-cols-1 1024:grid-cols-[0.8fr_1.2fr] gap-8 items-center">
           <div>
             <div className="flex gap-1 items-center">
-              <p className="text-foreground/60 text-sm tracking-wide mb-4">
+              <p className="text-foreground/60 text-sm tracking-[0.3em] mb-4">
                 VIRTUAL TRY-ON EXPERIENCE
               </p>
               <hr className="w-[10%] max-w-28 min-w-16 border-foreground/30" />
@@ -159,9 +162,12 @@ const Home = () => {
             </div>
 
             <div className="flex gap-4 mt-8">
-              <button className="bg-primary hover:bg-primary-dark cursor-pointer transition-colors rounded-full px-7 py-3 text-sm font-medium">
+              <Link
+                href="/shop"
+                className="bg-primary hover:bg-primary-dark cursor-pointer transition-colors rounded-full px-7 py-3 text-sm font-medium"
+              >
                 Try Virtually and Shop Frames
-              </button>
+              </Link>
             </div>
           </div>
 

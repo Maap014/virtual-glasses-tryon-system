@@ -69,17 +69,3 @@ body {
   scrollbar-width: none;
   overflow: -moz-scrollbars-none;
 }
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(calc(-50% - 1rem));
-  }
-}
-
-.animate-marquee {
-  animation: marquee 25s linear infinite;
-}

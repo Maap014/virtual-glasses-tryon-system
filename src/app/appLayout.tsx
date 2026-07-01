@@ -15,10 +15,7 @@ export const AppLayout = ({
     <div>
       <NavBar />
       <main
-        className={clsx(
-          "px-10 pb-4 pt-10  overflow-y-scroll hidden-scrollbar bg-white min-h-screen",
-          className,
-        )}
+        className={clsx("px-10 pb-4 pt-10 bg-white min-h-screen", className)}
       >
         <div className="max-w-400 mx-auto">{children}</div>
       </main>
