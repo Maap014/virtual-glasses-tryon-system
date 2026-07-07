@@ -39,3 +39,27 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# VS Code settings
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Node
+node_modules/
+package-lock.json
+
+
+# Database
+instance/
+neuroPredict.db
+*.sqlite3
+*.db
