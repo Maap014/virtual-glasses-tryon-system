@@ -1,9 +1,6 @@
-
-import os
 from models.glasses import init_glasses_table
 import sqlite3
 from utils.init_db import db_name
-from datetime import datetime, date
 
 # INIT DATABASE
 def init_database():
@@ -11,23 +8,25 @@ def init_database():
     Initialize database tables and seed initial data.
     Only runs full seeding once - checks for flag file.
     """
-    # Check if database has already been seeded
-    seed_flag_file = os.path.join('instance', '.db_seeded')
-    
+
     # Always create glasses table if it doesn't exist
     init_glasses_table()
+
+    # SQLite Connection
+    conn = sqlite3.connect(db_name())
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM glasses")
     
-    # check if the seed flag file exists
-    if os.path.exists(seed_flag_file):
+    count = cursor.fetchone()[0]
+    # check if database row is greater than 0, if so skip seeding
+    if count > 0:
         print("Database already seeded. Skipping seeding.")
+        conn.close()
         return
     
     print("Seeding database with initial glasses data...")
     
-    # SQLite Connection
-    conn = sqlite3.connect(db_name())
-    cursor = conn.cursor()
-    
+  
     # seed data fro glasses
     glasses_data = [
         ("Aviator", "Sunglasses", "Classic aviator sunglasses with metal frame.", 99.99, "https://example.com/images/aviator.jpg"),
@@ -49,11 +48,5 @@ def init_database():
     conn.commit()
     conn.close()
     
-    
-        # Create flag file to indicate seeding is complete
-    os.makedirs('instance', exist_ok=True)
-    with open(seed_flag_file, 'w') as f:
-        f.write(datetime.now().isoformat())
-
     print("\n Database initialized & seeded successfully!")
-    print("(Future runs will skip seeding. Delete instance/.db_seeded to re-seed)")
+    print("(Future runs will skip seeding. Delete database to re-seed)")
