@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Glasses 1",
+    "category": "eyeglasses",
+    "description": "Modern lightweight frame with a clean profile.",
+    "price": 89.99,
+    "image_url": "/eyewears/glasses1.png"
+  },
+  {
+    "name": "Glasses 2",
+    "category": "sunglasses",
+    "description": "Classic style with tinted lenses and polished finish.",
+    "price": 99.99,
+    "image_url": "/eyewears/glasses2.png"
+  },
+  {
+    "name": "Glasses 3",
+    "category": "blue_light",
+    "description": "Blue light filtering frame designed for screen use.",
+    "price": 79.99,
+    "image_url": "/eyewears/glasses3.png"
+  },
+  {
+    "name": "Glasses 4",
+    "category": "fashion",
+    "description": "Premium frame with refined details for a luxury look.",
+    "price": 129.99,
+    "image_url": "/eyewears/glasses4.png"
+  },
+  {
+    "name": "Glasses 5",
+    "category": "fashion",
+    "description": "Minimalist frame with subtle lines and comfortable fit.",
+    "price": 69.99,
+    "image_url": "/eyewears/glasses5.png"
+  },
+  {
+    "name": "Glasses 6",
+    "category": "sports",
+    "description": "Bold statement frame with vivid color and strong shape.",
+    "price": 109.99,
+    "image_url": "/eyewears/glasses6.png"
+  },
+  {
+    "name": "Glasses 7",
+    "category": "eyeglasses",
+    "description": "Everyday frame with a comfortable fit and crisp silhouette.",
+    "price": 84.99,
+    "image_url": "/eyewears/glasses7.png"
+  },
+  {
+    "name": "Glasses 8",
+    "category": "sunglasses",
+    "description": "Sporty frame with UV protection and sleek styling.",
+    "price": 94.99,
+    "image_url": "/eyewears/glasses8.png"
+  },
+  {
+    "name": "Glasses 9",
+    "category": "fashion",
+    "description": "Designer-inspired frame with premium materials.",
+    "price": 139.99,
+    "image_url": "/eyewears/glasses9.png"
+  }
+]
