@@ -1,6 +1,8 @@
 from models.glasses import init_glasses_table
 import sqlite3
 from utils.init_db import db_name
+import os
+import json
 
 # INIT DATABASE
 def init_database():
@@ -26,20 +28,29 @@ def init_database():
     
     print("Seeding database with initial glasses data...")
     
-  
-    # seed data fro glasses
-    glasses_data = [
-        ("Aviator", "Sunglasses", "Classic aviator sunglasses with metal frame.", 99.99, "https://example.com/images/aviator.jpg"),
-        ("Wayfarer", "Sunglasses", "Stylish wayfarer sunglasses with plastic frame.", 79.99, "https://example.com/images/wayfarer.jpg"),
-        ("Round Metal", "Sunglasses", "Trendy round metal sunglasses with thin frame.", 89.99, "https://example.com/images/round_metal.jpg"),
-        ("Cat Eye", "Sunglasses", "Elegant cat eye sunglasses with acetate frame.", 109.99, "https://example.com/images/cat_eye.jpg"),
-        ("Clubmaster", "Sunglasses", "Retro clubmaster sunglasses with mixed materials.", 119.99, "https://example.com/images/clubmaster.jpg"),
-    ]
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    glasses_data_path = os.path.join(base_path, 'glasses_seed.json')
     
+    with open(glasses_data_path, "r", encoding="utf-8") as file:
+            glasses_data = json.load(file)
+            
+    # Convert each JSON dictionary into a tuple
+    glasses_records = [
+        (
+            glasses["name"],
+            glasses["category"],
+            glasses["description"],
+            glasses["price"],
+            glasses["image_url"],
+        )
+        for glasses in glasses_data
+    ]
+
+ 
     # Insert seed data into the glasses table
     cursor.executemany(
         """INSERT INTO glasses (name, category, description, price, image_url) VALUES (?, ?, ?, ?, ?)""",
-        glasses_data
+        glasses_records
     )
     
     print("Database seeded successfully.")

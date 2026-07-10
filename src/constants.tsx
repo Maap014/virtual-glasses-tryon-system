@@ -1,12 +1,12 @@
-import glasses1 from "../src/assets/eyewears/glasses1.png";
-import glasses2 from "../src/assets/eyewears/glasses2.png";
-import glasses3 from "../src/assets/eyewears/glasses3.png";
-import glasses4 from "../src/assets/eyewears/glasses4.png";
-import glasses5 from "../src/assets/eyewears/glasses5.png";
-import glasses6 from "../src/assets/eyewears/glasses6.png";
-import glasses7 from "../src/assets/eyewears/glasses7.png";
-import glasses8 from "../src/assets/eyewears/glasses8.png";
-import glasses9 from "../src/assets/eyewears/glasses9.png";
+import glasses1 from "../public/eyewears/glasses1.png";
+import glasses2 from "../public/eyewears/glasses2.png";
+import glasses3 from "../public/eyewears/glasses3.png";
+import glasses4 from "../public/eyewears/glasses4.png";
+import glasses5 from "../public/eyewears/glasses5.png";
+import glasses6 from "../public/eyewears/glasses6.png";
+import glasses7 from "../public/eyewears/glasses7.png";
+import glasses8 from "../public/eyewears/glasses8.png";
+import glasses9 from "../public/eyewears/glasses9.png";
 export const eyeWearsDisplay = [
   {
     id: 1,
