@@ -13,3 +13,8 @@ export interface ProductType {
   category?: string;
   description?: string;
 }
+
+export interface ModalProps {
+  className?: string;
+  onClick?: () => void;
+}
