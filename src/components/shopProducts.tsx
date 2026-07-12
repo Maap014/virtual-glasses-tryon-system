@@ -6,6 +6,9 @@ import clsx from "clsx";
 import { getGlasses } from "@/services/api";
 import { ProductType } from "@/types";
 import { toast } from "sonner";
+import Webcam from "react-webcam";
+import { Modal } from "./modal";
+import { useIntersectionObserver } from "@/hooks/useObserver";
 
 const categories = [
   { key: "All Frames", value: "all" },
@@ -18,10 +21,18 @@ const categories = [
 
 export const ShopProducts = () => {
   const experience = useRef<HTMLDivElement>(null);
+  const [isSticky, setIsSticky] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(
+    null,
+  );
   const [products, setProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const [cameraEnabled, setCameraEnabled] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  // Re-fetch products whenever the user picks a new category.
   useEffect(() => {
     const loadGlasses = async () => {
       try {
@@ -41,24 +52,13 @@ export const ShopProducts = () => {
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
   };
-  const [isSticky, setIsSticky] = useState(true);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries[0].isIntersecting ? setIsSticky(false) : setIsSticky(true);
-      },
-      { threshold: 0.7 },
-    );
-    const current = (experience as React.RefObject<HTMLDivElement>)
-      ?.current as HTMLDivElement | null;
-    if (current) observer.observe(current);
-
-    return () => {
-      if (current) observer.unobserve(current);
-      observer.disconnect();
-    };
-  }, [experience]);
+  // an observer hook that watches when the product is in view so
+  // bar can become sticky only when needed.
+  useIntersectionObserver({
+    ref: experience,
+    setState: setIsSticky,
+  });
 
   return (
     <div>
@@ -107,7 +107,14 @@ export const ShopProducts = () => {
                   className="object-contain p-8 pb-20 group-hover:scale-105 transition-transform duration-500"
                 />
 
-                <button className="absolute bottom-5 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap bg-primary hover:bg-primary-dark transition-colors rounded-full px-6 py-3 text-sm font-medium cursor-pointer">
+                <button
+                  onClick={() => {
+                    setSelectedProduct(product);
+                    setCameraEnabled(true);
+                    setIsOpen(true);
+                  }}
+                  className="absolute bottom-5 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap bg-primary hover:bg-primary-dark transition-colors rounded-full px-6 py-3 text-sm font-medium cursor-pointer"
+                >
                   Try Virtually
                 </button>
               </div>
@@ -160,6 +167,34 @@ export const ShopProducts = () => {
           </p>
         </div>
       </section>
+      {isOpen && selectedProduct && (
+        <Modal
+          onClick={() => {
+            setSelectedProduct(null);
+            setIsOpen(false);
+            setCameraEnabled(false);
+          }}
+          className=" justify-center items-center flex"
+        >
+          {cameraError ? (
+            <p className="text-red-600 mt-3 text-sm">{cameraError}</p>
+          ) : cameraEnabled ? (
+            <Webcam
+              audio={false}
+              mirrored
+              height={400}
+              width={620}
+              videoConstraints={{ facingMode: "user" }}
+              onUserMediaError={(error) => {
+                setCameraError(
+                  "Camera access was blocked. Please allow camera permission in your browser and refresh the page.",
+                );
+              }}
+              className=" rounded-3xl overflow-hidden border border-border"
+            />
+          ) : null}
+        </Modal>
+      )}
     </div>
   );
 };
