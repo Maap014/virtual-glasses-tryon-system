@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Webcam from "react-webcam";
 import { Modal } from "./modal";
 import { useIntersectionObserver } from "@/hooks/useObserver";
+import VirtualTryon from "./virtualTryon";
 
 const categories = [
   { key: "All Frames", value: "all" },
@@ -179,19 +180,7 @@ export const ShopProducts = () => {
           {cameraError ? (
             <p className="text-red-600 mt-3 text-sm">{cameraError}</p>
           ) : cameraEnabled ? (
-            <Webcam
-              audio={false}
-              mirrored
-              height={400}
-              width={620}
-              videoConstraints={{ facingMode: "user" }}
-              onUserMediaError={(error) => {
-                setCameraError(
-                  "Camera access was blocked. Please allow camera permission in your browser and refresh the page.",
-                );
-              }}
-              className=" rounded-3xl overflow-hidden border border-border"
-            />
+            <VirtualTryon onCameraError={setCameraError} />
           ) : null}
         </Modal>
       )}
