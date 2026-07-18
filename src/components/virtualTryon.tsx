@@ -14,6 +14,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
   const lastVideoTimeRef = useRef(-1);
 
   const [isMediaPipeReady, setIsMediaPipeReady] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const createFaceLandmarker = async () => {
@@ -53,10 +54,27 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
     const video = webcamRef.current?.video;
     const faceLandmarker = faceLandmarkerRef.current;
 
-    if (!video || !faceLandmarker) {
+    const canvas = canvasRef.current;
+
+    if (!video || !faceLandmarker || !canvas) {
       animationFrameRef.current = requestAnimationFrame(predictWebcam);
+
       return;
     }
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      animationFrameRef.current = requestAnimationFrame(predictWebcam);
+
+      return;
+    }
+
+    // Make the canvas match the displayed webcam size
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (video.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA) {
       animationFrameRef.current = requestAnimationFrame(predictWebcam);
@@ -68,10 +86,27 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
 
       const results = faceLandmarker.detectForVideo(video, performance.now());
 
-      console.log("Face Landmarker results:", results);
+      //   console.log("Face Landmarker results:", results);
 
       if (results.faceLandmarks.length > 0) {
-        console.log("Face detected");
+        // console.log("Face detected");
+
+        const landmarks = results.faceLandmarks[0];
+
+        landmarks.forEach((landmark) => {
+          const x = (1 - landmark.x) * canvas.width;
+          const y = landmark.y * canvas.height;
+
+          //  Start drawing a new dot
+          ctx.beginPath();
+
+          // Draw a small circle at this landmark position
+          ctx.arc(x, y, 1, 0, Math.PI * 2);
+
+          // Fill the circle so it becomes visible
+          ctx.fillStyle = "white";
+          ctx.fill();
+        });
       } else {
         console.log("No face detected.");
       }
@@ -86,8 +121,6 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
         ref={webcamRef}
         audio={false}
         mirrored
-        height={400}
-        width={620}
         videoConstraints={{ facingMode: "user" }}
         onUserMedia={() => {
           if (isMediaPipeReady) {
@@ -101,6 +134,10 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
         }}
         className=" rounded-3xl overflow-hidden border border-border"
       />
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none absolute inset-0 h-full w-full"
+      ></canvas>
     </>
   );
 };
