@@ -15,6 +15,23 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
 
   const [isMediaPipeReady, setIsMediaPipeReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const glassesImageRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    const glassesImage = new Image();
+
+    glassesImage.src = "/eyewears/glasses8.png";
+
+    glassesImage.onload = () => {
+      glassesImageRef.current = glassesImage;
+
+      console.log("Glasses image loaded successfully");
+    };
+
+    glassesImage.onerror = () => {
+      console.error("Failed to load glasses image");
+    };
+  }, []);
 
   useEffect(() => {
     const createFaceLandmarker = async () => {
@@ -76,6 +93,8 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const glassesImage = glassesImageRef.current;
+
     if (video.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA) {
       animationFrameRef.current = requestAnimationFrame(predictWebcam);
       return;
@@ -93,6 +112,63 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
 
         const landmarks = results.faceLandmarks[0];
 
+        if (glassesImage) {
+          const leftEye = landmarks[33];
+          const rightEye = landmarks[263];
+
+          // Convert MediaPipe coordinates into canvas pixels.
+          // Reverses the x coordinates because the webcam is mirrored.
+          const leftX = (1 - leftEye.x) * canvas.width;
+          const leftY = leftEye.y * canvas.height;
+
+          const rightX = (1 - rightEye.x) * canvas.width;
+          const rightY = rightEye.y * canvas.height;
+
+          // Find the point halfway between both eye landmarks.
+          const centreX = (leftX + rightX) / 2;
+          const centreY = (leftY + rightY) / 2;
+
+          // Measure the straight-line distance between both eye landmarks.
+          const eyeDistance = Math.hypot(rightX - leftX, rightY - leftY);
+
+          // Controls how wide the glasses appear.
+          const widthScale = 1.8;
+
+          const glassesWidth = eyeDistance * widthScale;
+
+          // Preserve the PNG's original width-to-height proportions.
+          const glassesHeight =
+            glassesWidth *
+            (glassesImage.naturalHeight / glassesImage.naturalWidth);
+
+          // Fine-tuning values.
+          const horizontalOffset = glassesWidth * 0.02;
+          const verticalOffset = glassesHeight * 0.01;
+
+          // Calculate the tilt between the two eye landmarks.
+          let angle = Math.atan2(leftY - rightY, leftX - rightX);
+
+          // Save the normal canvas state.
+          ctx.save();
+
+          // Move the canvas origin to the adjusted glasses centre.
+          ctx.translate(centreX + horizontalOffset, centreY + verticalOffset);
+
+          // Rotate around the glasses centre.
+          ctx.rotate(angle);
+
+          // Draw the glasses around the new centre point.
+          ctx.drawImage(
+            glassesImage,
+            -glassesWidth / 2,
+            -glassesHeight / 2,
+            glassesWidth,
+            glassesHeight,
+          );
+
+          // Return the canvas to its normal state.
+          ctx.restore();
+        }
         landmarks.forEach((landmark) => {
           const x = (1 - landmark.x) * canvas.width;
           const y = landmark.y * canvas.height;
@@ -104,7 +180,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
           ctx.arc(x, y, 1, 0, Math.PI * 2);
 
           // Fill the circle so it becomes visible
-          ctx.fillStyle = "white";
+          ctx.fillStyle = "transparent";
           ctx.fill();
         });
       } else {
