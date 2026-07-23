@@ -88,10 +88,13 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
     }
 
     // Make the canvas match the displayed webcam size
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (
+      canvas.width !== video.videoWidth ||
+      canvas.height !== video.videoHeight
+    ) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    }
 
     const glassesImage = glassesImageRef.current;
 
@@ -106,6 +109,8 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
       const results = faceLandmarker.detectForVideo(video, performance.now());
 
       //   console.log("Face Landmarker results:", results);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (results.faceLandmarks.length > 0) {
         // console.log("Face detected");
@@ -142,7 +147,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
             (glassesImage.naturalHeight / glassesImage.naturalWidth);
 
           // Fine-tuning values.
-          const horizontalOffset = glassesWidth * 0.02;
+          const horizontalOffset = glassesWidth * 0.0;
           const verticalOffset = glassesHeight * 0.01;
 
           // Calculate the tilt between the two eye landmarks.
@@ -192,7 +197,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
   };
 
   return (
-    <>
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-border">
       <Webcam
         ref={webcamRef}
         audio={false}
@@ -203,18 +208,19 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
             predictWebcam();
           }
         }}
-        onUserMediaError={(error) => {
+        onUserMediaError={() => {
           onCameraError(
             "Camera access was blocked. Please allow camera permission in your browser and refresh the page.",
           );
         }}
-        className=" rounded-3xl overflow-hidden border border-border"
+        className="absolute inset-0 h-full w-full object-cover"
       />
+
       <canvas
         ref={canvasRef}
         className="pointer-events-none absolute inset-0 h-full w-full"
-      ></canvas>
-    </>
+      />
+    </div>
   );
 };
 
