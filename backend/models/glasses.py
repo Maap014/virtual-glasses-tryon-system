@@ -14,7 +14,8 @@ def init_glasses_table():
             category TEXT NOT NULL,
             description TEXT NOT NULL,
             price REAL NOT NULL,
-            image_url TEXT NOT NULL
+            image_url TEXT NOT NULL,
+            tryon_url TEXT NOT NULL
         )
     ''')
     
@@ -24,13 +25,14 @@ def init_glasses_table():
 
 class Glasses:
     
-    def __init__(self, id, name, category, description, price, image_url):
+    def __init__(self, id, name, category, description, price, image_url, tryon_url):
         self.id = id
         self.name = name
         self.category = category
         self.description = description
         self.price = price
         self.image_url = image_url
+        self.tryon_url = tryon_url
         
     
     @staticmethod
@@ -40,12 +42,12 @@ class Glasses:
 
         if category and category.lower() != "all":
             cursor.execute(
-                "SELECT id, name, category, description, price, image_url FROM glasses WHERE category = ?",
+                "SELECT id, name, category, description, price, image_url, tryon_url FROM glasses WHERE category = ?",
                 (category,),
             )
         else:
             cursor.execute(
-                "SELECT id, name, category, description, price, image_url FROM glasses"
+                "SELECT id, name, category, description, price, image_url, tryon_url FROM glasses"
             )
 
         rows = cursor.fetchall()
@@ -58,6 +60,7 @@ class Glasses:
                 description=row[3],
                 price=row[4],
                 image_url=row[5],
+                tryon_url= row[6]
             )
             for row in rows
         ]

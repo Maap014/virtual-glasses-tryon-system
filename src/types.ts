@@ -9,7 +9,8 @@ export interface ProductType {
   id: number;
   name: string;
   price: string;
-  image_url: StaticImageData | string;
+  image_url: string;
+  tryon_url: string;
   category?: string;
   description?: string;
 }

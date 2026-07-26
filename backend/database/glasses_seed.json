@@ -1,65 +1,66 @@
 [
   {
-    "name": "Glasses 1",
-    "category": "eyeglasses",
-    "description": "Modern lightweight frame with a clean profile.",
-    "price": 89.99,
-    "image_url": "/eyewears/glasses1.png"
-  },
-  {
-    "name": "Glasses 2",
+    "name": "Classic Black Wayfarer",
     "category": "sunglasses",
-    "description": "Classic style with tinted lenses and polished finish.",
+    "description": "Timeless wayfarer styling with dark lenses and a bold frame.",
     "price": 99.99,
-    "image_url": "/eyewears/glasses2.png"
+    "image_url": "/eyewears/display/Classic_black_Wayfarer_sunglasses.png",
+    "tryon_url": "/eyewears/tryon/Classic_black_Wayfarer_sunglasses_tryon.png"
   },
   {
-    "name": "Glasses 3",
-    "category": "blue_light",
-    "description": "Blue light filtering frame designed for screen use.",
-    "price": 79.99,
-    "image_url": "/eyewears/glasses3.png"
-  },
-  {
-    "name": "Glasses 4",
-    "category": "fashion",
-    "description": "Premium frame with refined details for a luxury look.",
-    "price": 129.99,
-    "image_url": "/eyewears/glasses4.png"
-  },
-  {
-    "name": "Glasses 5",
-    "category": "fashion",
-    "description": "Minimalist frame with subtle lines and comfortable fit.",
-    "price": 69.99,
-    "image_url": "/eyewears/glasses5.png"
-  },
-  {
-    "name": "Glasses 6",
-    "category": "sports",
-    "description": "Bold statement frame with vivid color and strong shape.",
-    "price": 109.99,
-    "image_url": "/eyewears/glasses6.png"
-  },
-  {
-    "name": "Glasses 7",
-    "category": "eyeglasses",
-    "description": "Everyday frame with a comfortable fit and crisp silhouette.",
-    "price": 84.99,
-    "image_url": "/eyewears/glasses7.png"
-  },
-  {
-    "name": "Glasses 8",
+    "name": "Gold Aviator",
     "category": "sunglasses",
-    "description": "Sporty frame with UV protection and sleek styling.",
-    "price": 94.99,
-    "image_url": "/eyewears/glasses8.png"
+    "description": "Classic aviator shape with polished gold frames and tinted lenses.",
+    "price": 109.99,
+    "image_url": "/eyewears/display/Gold_aviator_sunglasses.png",
+    "tryon_url": "/eyewears/tryon/Gold_aviator_sunglasses_tryon.png"
   },
   {
-    "name": "Glasses 9",
+    "name": "Modern Wraparound",
+    "category": "sports",
+    "description": "Performance-ready wraparound frame with a secure, sporty fit.",
+    "price": 119.99,
+    "image_url": "/eyewears/display/Modern_wraparound_sports_glasses.png",
+    "tryon_url": "/eyewears/tryon/Modern_wraparound_sports_glasses_tryon.png"
+  },
+  {
+    "name": "Oversized Cat-Eye",
     "category": "fashion",
-    "description": "Designer-inspired frame with premium materials.",
-    "price": 139.99,
-    "image_url": "/eyewears/glasses9.png"
+    "description": "Bold cat-eye silhouette for a glamorous, fashion-forward look.",
+    "price": 129.99,
+    "image_url": "/eyewears/display/Oversized_cat-eye_glasses.png",
+    "tryon_url": "/eyewears/tryon/Oversized_cat-eye_glasses_tryon.png"
+  },
+  {
+    "name": "Rimless Titanium Prescription",
+    "category": "eyeglasses",
+    "description": "Minimal rimless titanium frame with a lightweight feel.",
+    "price": 89.99,
+    "image_url": "/eyewears/display/Rimless_titanium_prescription_eyeglasses.png",
+    "tryon_url": "/eyewears/tryon/Rimless_titanium_prescription_glasses_tryon.png"
+  },
+  {
+    "name": "Round Gold Metal",
+    "category": "eyeglasses",
+    "description": "Vintage-inspired round frame finished in elegant gold metal.",
+    "price": 104.99,
+    "image_url": "/eyewears/display/Round_gold_metal_prescription_glasses.png",
+    "tryon_url": "/eyewears/tryon/Round_gold_metal _prescription_glasses_tryon.png"
+  },
+  {
+    "name": "Slim Matte Black",
+    "category": "eyeglasses",
+    "description": "Sleek matte black frame built for everyday comfort.",
+    "price": 94.99,
+    "image_url": "/eyewears/display/slim_matte_black_prescription_glasses.png",
+    "tryon_url": "/eyewears/tryon/slim_matte_black_prescription_glasses_Tryon.png"
+  },
+  {
+    "name": "Transparent Blue-Light",
+    "category": "blue_light",
+    "description": "Clear frame with blue light filtering lenses for screen use.",
+    "price": 79.99,
+    "image_url": "/eyewears/display/Transparent_blue-light_glasses.png",
+    "tryon_url": "/eyewears/tryon/Transparent_blue-light_glasses_tryon.png"
   }
 ]
