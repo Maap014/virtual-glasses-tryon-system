@@ -42,6 +42,7 @@ def init_database():
             glasses["description"],
             glasses["price"],
             glasses["image_url"],
+            glasses["tryon_url"]
         )
         for glasses in glasses_data
     ]
@@ -49,7 +50,7 @@ def init_database():
  
     # Insert seed data into the glasses table
     cursor.executemany(
-        """INSERT INTO glasses (name, category, description, price, image_url) VALUES (?, ?, ?, ?, ?)""",
+        """INSERT INTO glasses (name, category, description, price, image_url, tryon_url) VALUES (?, ?, ?, ?, ?, ?)""",
         glasses_records
     )
     

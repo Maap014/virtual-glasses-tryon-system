@@ -1,13 +1,18 @@
 "use client";
+import { ProductType } from "@/types";
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 
 interface VirtualTryOnProps {
   onCameraError: (message: string) => void;
+  selectedProduct: ProductType;
 }
 
-const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
+const VirtualTryon = ({
+  onCameraError,
+  selectedProduct,
+}: VirtualTryOnProps) => {
   const webcamRef = useRef<Webcam | null>(null);
   const faceLandmarkerRef = useRef<FaceLandmarker | null>(null);
   const animationFrameRef = useRef<number | null>(null);
@@ -20,7 +25,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
   useEffect(() => {
     const glassesImage = new Image();
 
-    glassesImage.src = "/eyewears/glasses8.png";
+    glassesImage.src = selectedProduct.tryon_url;
 
     glassesImage.onload = () => {
       glassesImageRef.current = glassesImage;
@@ -31,7 +36,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
     glassesImage.onerror = () => {
       console.error("Failed to load glasses image");
     };
-  }, []);
+  }, [selectedProduct.tryon_url]);
 
   useEffect(() => {
     const createFaceLandmarker = async () => {
@@ -137,7 +142,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
           const eyeDistance = Math.hypot(rightX - leftX, rightY - leftY);
 
           // Controls how wide the glasses appear.
-          const widthScale = 1.8;
+          const widthScale = 2;
 
           const glassesWidth = eyeDistance * widthScale;
 
@@ -148,7 +153,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
 
           // Fine-tuning values.
           const horizontalOffset = glassesWidth * 0.0;
-          const verticalOffset = glassesHeight * 0.01;
+          const verticalOffset = glassesHeight * 0.02;
 
           // Calculate the tilt between the two eye landmarks.
           let angle = Math.atan2(leftY - rightY, leftX - rightX);
@@ -197,7 +202,7 @@ const VirtualTryon = ({ onCameraError }: VirtualTryOnProps) => {
   };
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-border">
+    <div className="relative aspect-4/3 w-full overflow-hidden rounded-3xl border border-border">
       <Webcam
         ref={webcamRef}
         audio={false}

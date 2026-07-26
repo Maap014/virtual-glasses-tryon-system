@@ -180,7 +180,10 @@ export const ShopProducts = () => {
           {cameraError ? (
             <p className="text-red-600 mt-3 text-sm">{cameraError}</p>
           ) : cameraEnabled ? (
-            <VirtualTryon onCameraError={setCameraError} />
+            <VirtualTryon
+              onCameraError={setCameraError}
+              selectedProduct={selectedProduct}
+            />
           ) : null}
         </Modal>
       )}
