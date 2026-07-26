@@ -1,56 +1,42 @@
-import glasses1 from "../public/eyewears/glasses1.png";
-import glasses2 from "../public/eyewears/glasses2.png";
-import glasses3 from "../public/eyewears/glasses3.png";
-import glasses4 from "../public/eyewears/glasses4.png";
-import glasses5 from "../public/eyewears/glasses5.png";
-import glasses6 from "../public/eyewears/glasses6.png";
-import glasses7 from "../public/eyewears/glasses7.png";
-import glasses8 from "../public/eyewears/glasses8.png";
-import glasses9 from "../public/eyewears/glasses9.png";
 export const eyeWearsDisplay = [
   {
     id: 1,
-    name: "Classic Aviator",
-    image: glasses1,
+    name: "Classic Black Wayfarer",
+    image: "/eyewears/display/Classic_black_Wayfarer_sunglasses.png",
   },
   {
     id: 2,
-    name: "Retro Round",
-    image: glasses2,
+    name: "Gold Aviator",
+    image: "/eyewears/display/Gold_aviator_sunglasses.png",
   },
   {
     id: 3,
-    name: "Modern Square",
-    image: glasses3,
+    name: "Modern Wraparound",
+    image: "/eyewears/display/Modern_wraparound_sports_glasses.png",
   },
   {
     id: 4,
-    name: "Elegant Cat-Eye",
-    image: glasses4,
+    name: "Oversized Cat-Eye",
+    image: "/eyewears/display/Oversized_cat-eye_glasses.png",
   },
   {
     id: 5,
-    name: "Sporty Wrap-Around",
-    image: glasses5,
+    name: "Rimless Titanium Prescription",
+    image: "/eyewears/display/Rimless_titanium_prescription_eyeglasses.png",
   },
   {
     id: 6,
-    name: "Trendy Geometric",
-    image: glasses6,
+    name: "Round Gold Metal",
+    image: "/eyewears/display/Round_gold_metal_prescription_glasses.png",
   },
   {
     id: 7,
-    name: "Vintage Round",
-    image: glasses7,
+    name: "Slim Matte Black",
+    image: "/eyewears/display/slim_matte_black_prescription_glasses.png",
   },
   {
     id: 8,
-    name: "Sleek Rimless",
-    image: glasses8,
-  },
-  {
-    id: 9,
-    name: "Bold Oversized",
-    image: glasses9,
+    name: "Transparent Blue-Light",
+    image: "/eyewears/display/Transparent_blue-light_glasses.png",
   },
 ];
