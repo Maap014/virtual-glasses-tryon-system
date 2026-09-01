@@ -1,3 +1,9 @@
+export const VtoFlow = [
+  { name: "Browse", description: "Explore different eyewear styles." },
+  { name: "Try", description: "Preview selected frames using your webcam." },
+  { name: "Choose", description: "Compare frames before making your choice" },
+];
+
 export const eyeWearsDisplay = [
   {
     id: 1,
