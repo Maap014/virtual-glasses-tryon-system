@@ -31,7 +31,7 @@ const Home = () => {
         </div>
       </div>
       <section className="grid grid-cols-1 1024:grid-cols-[1.35fr_0.65fr] gap-6 pt-12">
-        <div className="relative overflow-hidden rounded-[40px] h-[540px]">
+        <div className="relative overflow-hidden rounded-[40px] h-135">
           <Image
             src={heroImage}
             alt="Eyewear model"
@@ -97,7 +97,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="relative h-[520px] overflow-hidden rounded-[40px]">
+          <div className="relative h-130 overflow-hidden rounded-[40px]">
             <Image
               src={image_3}
               alt="Eyewear model"

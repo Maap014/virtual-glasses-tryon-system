@@ -1,11 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavBarProps } from "@/types";
 import clsx from "clsx";
 import { CartIcon } from "../svg";
+import { useRef, useState } from "react";
+import { useCart } from "@/components/context/cartContext";
+import { CartDropdown } from "@/components/cartDropdown";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 export const DesktopNavbar = ({
   navItems,
@@ -15,14 +18,22 @@ export const DesktopNavbar = ({
   className: string;
 }) => {
   const pathname = usePathname();
+  const [showCart, setShowCart] = useState(false);
+
+  const cartRef = useRef<HTMLDivElement>(null);
+
+  const { cartCount } = useCart();
 
   const isActive = (href: string) => pathname === href;
 
+  useClickOutside(cartRef, () => {
+    setShowCart(false);
+  });
+
   return (
-    <nav className={clsx("px-8 py-4  bg-white shadow-sm ", className)}>
-      <div className=" flex items-center justify-between max-w-400 w-full mx-auto">
+    <nav className={clsx("px-8 py-4 bg-white shadow-sm", className)}>
+      <div className="flex items-center justify-between max-w-400 w-full mx-auto">
         <div className="flex gap-2 justify-between items-center">
-          {/* <Image src="" alt="Logo" width={100} height={40} /> */}
           <div className="w-10 h-10 bg-gray-300 rounded-full" />
           <p className="text-lg font-semibold">VGlasses</p>
         </div>
@@ -45,7 +56,23 @@ export const DesktopNavbar = ({
           ))}
         </ul>
 
-        <CartIcon className="h-8 w-8 cursor-pointer" fill="" />
+        <div ref={cartRef} className="relative">
+          <button
+            onClick={() => setShowCart((prev) => !prev)}
+            className="relative cursor-pointer"
+            aria-label="Open cart"
+          >
+            <CartIcon className="h-8 w-8" fill="" />
+
+            {cartCount > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-semibold">
+                {cartCount}
+              </span>
+            )}
+          </button>
+
+          {showCart && <CartDropdown />}
+        </div>
       </div>
     </nav>
   );

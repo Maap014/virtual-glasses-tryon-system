@@ -156,7 +156,7 @@ const VirtualTryon = ({
           const verticalOffset = glassesHeight * 0.02;
 
           // Calculate the tilt between the two eye landmarks.
-          let angle = Math.atan2(leftY - rightY, leftX - rightX);
+          const angle = Math.atan2(leftY - rightY, leftX - rightX);
 
           // Save the normal canvas state.
           ctx.save();

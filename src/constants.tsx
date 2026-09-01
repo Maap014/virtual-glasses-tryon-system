@@ -4,6 +4,15 @@ export const VtoFlow = [
   { name: "Choose", description: "Compare frames before making your choice" },
 ];
 
+export const categories = [
+  { key: "All Frames", value: "all" },
+  { key: "Eyeglasses", value: "eyeglasses" },
+  { key: "Sunglasses", value: "sunglasses" },
+  { key: "Blue Light", value: "blue_light" },
+  { key: "Sports", value: "sports" },
+  { key: "Fashion", value: "fashion" },
+];
+
 export const eyeWearsDisplay = [
   {
     id: 1,
