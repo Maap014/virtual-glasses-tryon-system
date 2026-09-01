@@ -1,5 +1,3 @@
-import { StaticImageData } from "next/image";
-
 export interface NavBarProps {
   name: string;
   href: string;

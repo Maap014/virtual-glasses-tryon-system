@@ -2,9 +2,12 @@
 
 import { NavBarProps } from "@/types";
 import clsx from "clsx";
-import { useState } from "react";
-import { CloseIcon, HamburgerIcon } from "@/components/svg";
+import { useRef, useState } from "react";
+import { CartIcon, CloseIcon, HamburgerIcon } from "@/components/svg";
 import { Dropdown } from "../dropdown";
+import { useCart } from "@/components/context/cartContext";
+import { CartDropdown } from "@/components/cartDropdown";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 export const MobileNavbar = ({
   navItems,
@@ -14,30 +17,72 @@ export const MobileNavbar = ({
   className: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+
+  const navbarRef = useRef<HTMLDivElement>(null);
+
+  const { cartCount } = useCart();
+
+  useClickOutside(navbarRef, () => {
+    setIsOpen(false);
+    setShowCart(false);
+  });
+
+  const handleCart = () => {
+    setShowCart((prev) => !prev);
+    setIsOpen(false);
+  };
+
+  const handleMenu = () => {
+    setIsOpen((prev) => !prev);
+    setShowCart(false);
+  };
 
   return (
     <nav className={clsx("px-8 py-3.5 bg-white shadow-sm", className)}>
-      <div className="flex items-center justify-between">
+      <div
+        ref={navbarRef}
+        className="relative flex items-center justify-between"
+      >
         <div className="flex gap-2 items-center">
           <div className="w-8 h-8 bg-gray-300 rounded-full" />
           <p className="text-lg font-semibold">VGlasses</p>
         </div>
-        {!isOpen ? (
-          <span onClick={() => setIsOpen(true)}>
-            <HamburgerIcon className="h-10 w-10" fill="" />
-          </span>
-        ) : (
-          <span onClick={() => setIsOpen(false)}>
-            <CloseIcon className="h-10 w-10" fill="" />
-          </span>
-        )}
-        {isOpen && (
-          <Dropdown
-            navItems={navItems}
-            className={clsx(
-              "absolute top-full left-0 w-full bg-white shadow-md",
-            )}
-          />
+
+        <div className="flex gap-4 items-center">
+          <div className="relative">
+            <button
+              onClick={handleCart}
+              className="relative cursor-pointer"
+              aria-label="Open cart"
+            >
+              <CartIcon className="h-7 w-7" fill="" />
+
+              {cartCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-semibold">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {!isOpen ? (
+            <button onClick={handleMenu}>
+              <HamburgerIcon className="h-10 w-10" fill="" />
+            </button>
+          ) : (
+            <button onClick={handleMenu}>
+              <CloseIcon className="h-10 w-10" fill="" />
+            </button>
+          )}
+        </div>
+
+        {isOpen && <Dropdown navItems={navItems} />}
+
+        {showCart && (
+          <div className="absolute right-0 top-12">
+            <CartDropdown />
+          </div>
         )}
       </div>
     </nav>

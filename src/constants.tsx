@@ -1,3 +1,18 @@
+export const VtoFlow = [
+  { name: "Browse", description: "Explore different eyewear styles." },
+  { name: "Try", description: "Preview selected frames using your webcam." },
+  { name: "Choose", description: "Compare frames before making your choice" },
+];
+
+export const categories = [
+  { key: "All Frames", value: "all" },
+  { key: "Eyeglasses", value: "eyeglasses" },
+  { key: "Sunglasses", value: "sunglasses" },
+  { key: "Blue Light", value: "blue_light" },
+  { key: "Sports", value: "sports" },
+  { key: "Fashion", value: "fashion" },
+];
+
 export const eyeWearsDisplay = [
   {
     id: 1,

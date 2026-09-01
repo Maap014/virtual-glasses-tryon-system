@@ -6,19 +6,11 @@ import clsx from "clsx";
 import { getGlasses } from "@/services/api";
 import { ProductType } from "@/types";
 import { toast } from "sonner";
-import Webcam from "react-webcam";
 import { Modal } from "./modal";
 import { useIntersectionObserver } from "@/hooks/useObserver";
 import VirtualTryon from "./virtualTryon";
-
-const categories = [
-  { key: "All Frames", value: "all" },
-  { key: "Eyeglasses", value: "eyeglasses" },
-  { key: "Sunglasses", value: "sunglasses" },
-  { key: "Blue Light", value: "blue_light" },
-  { key: "Sports", value: "sports" },
-  { key: "Fashion", value: "fashion" },
-];
+import { useCart } from "@/components/context/cartContext";
+import { categories } from "@/constants";
 
 export const ShopProducts = () => {
   const experience = useRef<HTMLDivElement>(null);
@@ -32,6 +24,8 @@ export const ShopProducts = () => {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [cameraEnabled, setCameraEnabled] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { addToCart } = useCart();
 
   // Re-fetch products whenever the user picks a new category.
   useEffect(() => {
@@ -136,7 +130,13 @@ export const ShopProducts = () => {
                     Premium Eyewear
                   </p>
 
-                  <button className="bg-primary hover:bg-primary-dark transition-colors rounded-3xl px-5 py-2 text-sm font-medium cursor-pointer">
+                  <button
+                    onClick={() => {
+                      addToCart(product);
+                      toast.success(`${product.name} added to cart`);
+                    }}
+                    className="bg-primary hover:bg-primary-dark transition-colors rounded-3xl px-5 py-2 text-sm font-medium cursor-pointer"
+                  >
                     Add
                   </button>
                 </div>

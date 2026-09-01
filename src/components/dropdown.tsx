@@ -5,18 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-export const Dropdown = ({
-  navItems,
-  className,
-}: {
-  navItems: NavBarProps[];
-  className: string;
-}) => {
+export const Dropdown = ({ navItems }: { navItems: NavBarProps[] }) => {
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname === href;
   return (
-    <div className=" bg-white shadow-lg rounded-md p-4  flex flex-col gap-3 absolute w right-7 top-18 z-10">
+    <div
+      className={clsx(
+        " bg-white shadow-lg rounded-md p-4  flex flex-col gap-3 absolute w right-7 top-18 z-10",
+      )}
+    >
       {navItems.map((item) => (
         <Link
           key={item.name}
@@ -31,17 +29,6 @@ export const Dropdown = ({
           {item.name}
         </Link>
       ))}
-      <Link
-        href={"/cart"}
-        className={clsx(
-          pathname === "/cart"
-            ? "text-foreground font-semibold"
-            : "text-foreground/70 hover:text-foreground",
-          "text-foreground/90 hover:text-foreground transition-colors duration-200",
-        )}
-      >
-        Cart
-      </Link>
     </div>
   );
 };
