@@ -34,12 +34,12 @@ class Glasses:
         self.image_url = image_url
         self.tryon_url = tryon_url
         
-    
+    # Method to retrieve glasses from the database, optionally filtered by category.
     @staticmethod
     def get_glasses(category=None):
         conn = sqlite3.connect(db_name())
         cursor = conn.cursor()
-
+      # If a category filter is provided and it's not "all", filter the results by that category.
         if category and category.lower() != "all":
             cursor.execute(
                 "SELECT id, name, category, description, price, image_url, tryon_url FROM glasses WHERE category = ?",

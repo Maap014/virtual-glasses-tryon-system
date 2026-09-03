@@ -6,6 +6,26 @@ The system combines a **Next.js and React frontend**, **Flask backend**, **SQLit
 
 ---
 
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running the Project](#running-the-project)
+- [Using the Application](#using-the-application)
+- [How the Application Works](#how-the-application-works)
+- [Virtual Try-On](#virtual-try-on)
+- [Eyewear Assets](#eyewear-assets)
+- [Database](#database)
+- [Webcam and Privacy](#webcam-and-privacy)
+- [Project Aim, Objectives and Research Alignment](#project-aim-objectives-and-research-alignment)
+- [Testing and Evaluation](#testing-and-evaluation)
+- [Troubleshooting](#troubleshooting)
+- [Future Improvements](#future-improvements)
+- [License](#license)
+
 ## Features
 
 - Real-time virtual glasses try-on using MediaPipe Face Landmarker
@@ -327,27 +347,10 @@ public/models/face_landmarker.task
 
 # Eyewear Assets
 
-Each eyewear product uses two separate images.
+Each product uses two images:
 
-### Display Images
-
-Stored in:
-
-```text
-public/eyewears/display/
-```
-
-These images are used within the product catalogue.
-
-### Virtual Try-On Images
-
-Stored in:
-
-```text
-public/eyewears/tryon/
-```
-
-These are transparent, front-facing images designed specifically for positioning over the user's face during the virtual try-on process.
+- `public/eyewears/display/` — catalogue product images.
+- `public/eyewears/tryon/` — transparent front-facing images used for the virtual try-on overlay.
 
 ---
 
@@ -384,15 +387,179 @@ Webcam images and detected facial landmarks are not stored in the SQLite databas
 
 ---
 
+# Project Aim, Objectives and Research Alignment
+
+### Aim
+
+To build a virtual glasses try-on system that allows users to see how different glasses look on their face in real time using their webcam, in order to improve the online shopping experience.
+
+### Project Objectives
+
+1. To understand how virtual try-on systems work by reviewing existing solutions and techniques.
+2. To use MediaPipe to detect facial features such as the eyes and nose in real time.
+3. To develop a system that uses a webcam to display glasses on a user's face accurately.
+4. To create a simple web interface where users can select and try different glasses virtually.
+5. To test how well the system works in terms of accuracy, speed and ease of use.
+6. To explore a simple way of suggesting suitable glasses based on the user's facial features _(optional extension)_.
+
+### How the Artefact Addresses the Objectives
+
+| Objective                                                      | Artefact Implementation                                                                                                                                             |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Understand existing virtual try-on solutions and techniques | Existing VTO approaches, facial landmark detection techniques and related systems were reviewed during the research and design stages of the project.               |
+| 2. Use MediaPipe for real-time facial feature detection        | The artefact integrates MediaPipe Face Landmarker to detect facial landmarks from the user's live webcam feed.                                                      |
+| 3. Display glasses accurately on the user's face               | Detected eye landmarks are used to calculate the position, scale and rotation of the selected glasses before rendering them over the webcam feed using HTML Canvas. |
+| 4. Create a simple web interface                               | The Next.js frontend allows users to browse eyewear, filter products, select frames and launch the virtual try-on feature.                                          |
+| 5. Test accuracy, speed and ease of use                        | The system was evaluated through functional testing, different viewing and lighting conditions, repeated VTO initialisation timing tests and usability feedback.    |
+| 6. Explore glasses recommendations                             | This was identified as an optional extension and was not implemented within the final core artefact.                                                                |
+
+### Research Questions
+
+**RQ1:** To what extent can an AI-based virtual glasses try-on system improve user experience in online eyewear shopping?
+
+The artefact addresses this by combining an eyewear catalogue with a real-time virtual try-on feature, allowing users to preview selected glasses on their own face before making a product decision. Functional testing and usability feedback were used to evaluate the resulting experience.
+
+**RQ2:** How accurately can MediaPipe facial landmark detection support real-time virtual glasses alignment in a web-based environment?
+
+The artefact uses MediaPipe facial landmarks to determine the position of the user's eyes and uses these landmarks to calculate the centre position, scale and rotation of the glasses overlay. Testing under different distances, head positions and viewing conditions was used to evaluate the resulting alignment.
+
+**RQ3:** What are the main challenges affecting alignment accuracy and real-time performance in a 2D virtual glasses try-on system?
+
+The evaluation identified challenges including reduced alignment during larger head rotations, poorer performance under difficult lighting conditions and differences in VTO initialisation time across devices. These findings demonstrate both the strengths and limitations of the implemented 2D approach.
+
+# Testing and Evaluation
+
+The artefact was evaluated using a combination of automated backend testing, manual functional testing, virtual try-on testing and cross-device performance testing. The purpose of the evaluation was to verify that the main application features operated correctly and to assess the behaviour of the virtual try-on feature under different conditions.
+
+## Automated Backend Testing
+
+Automated backend tests were created using Python `unittest` and the Flask test client. These tests verify the main behaviour of the eyewear catalogue API and the integrity of product image paths.
+
+The tests can be run from the backend directory using:
+
+```bash
+python test.py
+```
+
+The following areas are tested:
+
+| Test                         | Expected Result                                                                                                                         |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Retrieve all glasses         | The API should return HTTP status `200`, indicate a successful request and return a non-empty list of eyewear products.                 |
+| Filter glasses by category   | When a category is supplied, all returned products should belong to the requested category.                                             |
+| Validate product image paths | Each product should contain a valid display image path and a virtual try-on image path pointing to the appropriate eyewear directories. |
+
+The automated tests provide repeatable verification of the Flask API and catalogue data used by the frontend.
+
+---
+
+## Manual Functional Testing
+
+Manual testing was also carried out to verify the main user-facing features of the application.
+
+| Test ID | Test Scenario                     | Expected Result                                                                     | Actual Result                                                             | Status |
+| ------- | --------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------ |
+| FT01    | Open the eyewear catalogue        | All eyewear products and associated images should load correctly.                   | All products and associated images loaded and displayed correctly.        | Pass   |
+| FT02    | Select an eyewear category        | Only products belonging to the selected category should be displayed.               | The correct products were displayed for each selected category.           | Pass   |
+| FT03    | Select Try Virtually              | The VTO modal should open with the selected eyewear product.                        | The modal opened and displayed the correct selected product.              | Pass   |
+| FT04    | Allow camera permission           | The live webcam feed should be displayed.                                           | The webcam feed was displayed after permission was granted.               | Pass   |
+| FT05    | Deny camera permission            | Webcam access should be prevented and an appropriate error message should be shown. | Camera access was prevented and an error message was displayed.           | Pass   |
+| FT06    | Close the VTO modal               | Webcam access and facial landmark processing should stop.                           | Webcam access and MediaPipe processing stopped when the modal was closed. | Pass   |
+| FT07    | Reopen the VTO modal              | Webcam access and facial landmark detection should restart.                         | Webcam access and facial landmark detection restarted correctly.          | Pass   |
+| FT08    | Select different eyewear products | The corresponding virtual try-on image should be displayed.                         | Each tested product displayed the correct virtual try-on image.           | Pass   |
+
+---
+
+## Virtual Try-On Evaluation
+
+The virtual try-on feature was tested under different viewing conditions to assess positioning, scaling, rotation and the reliability of facial landmark detection.
+
+| Test Condition                              | Observed Result                                                                                                                | Evaluation |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| Face positioned directly towards the camera | The glasses remained positioned across the eye region and aligned correctly with the face.                                     | Good       |
+| User moved closer to the camera             | The glasses increased in size while maintaining their position on the face.                                                    | Good       |
+| User moved further from the camera          | The glasses decreased in size while remaining positioned across the eye region.                                                | Good       |
+| Head tilted sideways                        | The glasses rotated according to the angle of the detected eye landmarks.                                                      | Good       |
+| Face turned away from the frontal position  | The glasses continued to follow the detected eyes, but the overlay became partially misaligned as the viewing angle increased. | Limited    |
+| Good lighting                               | Facial landmarks were detected consistently and the glasses overlay remained visible.                                          | Good       |
+| Poor lighting                               | Facial detection became less reliable and the glasses were sometimes not displayed.                                            | Limited    |
+
+The results show that the 2D virtual try-on approach performs most reliably when the user's face is mainly frontal and clearly visible under suitable lighting. Larger head rotations and poor lighting reduce the reliability of the current implementation.
+
+---
+
+## Browser and Device Testing
+
+The artefact was tested across three laptops using Google Chrome and Microsoft Edge.
+
+| Device           | Browser        | Result                                                   |
+| ---------------- | -------------- | -------------------------------------------------------- |
+| HP EliteBook     | Google Chrome  | Main application and VTO features operated successfully. |
+| Dell XPS 13      | Microsoft Edge | Main application and VTO features operated successfully. |
+| HP Pavilion x360 | Microsoft Edge | Main application and VTO features operated successfully. |
+
+The same general virtual try-on behaviour was observed across the three tested devices. However, performance may vary depending on device hardware, browser behaviour and available processing resources.
+
+---
+
+## VTO Initialisation Performance
+
+The time required for the virtual try-on feature to become operational was measured across the three tested laptops.
+
+Three conditions were evaluated:
+
+- **T1** — Initialisation after camera permission was granted.
+- **T2** — Subsequent initialisation when camera permission had already been granted.
+- **T3** — Initialisation after refreshing the page.
+
+Each condition was repeated ten times on each device and the mean initialisation time was calculated.
+
+| Device / Browser                  | T1 Mean(s) | T2 Mean (s) | T3 Mean (s) |
+| --------------------------------- | ---------: | ----------: | ----------: |
+| HP EliteBook / Google Chrome      |       1.98 |        1.94 |        2.14 |
+| Dell XPS 13 / Microsoft Edge      |       1.48 |        1.36 |        1.44 |
+| HP Pavilion x360 / Microsoft Edge |       1.37 |        1.39 |        1.56 |
+
+Across the tested devices and conditions, mean VTO initialisation times ranged from approximately **1.36 seconds to 2.14 seconds**.
+
+These results indicate that the virtual try-on feature became operational within a relatively short period during testing. The results are limited to the tested hardware and browsers and should not be interpreted as a performance benchmark for all devices.
+
+---
+
+## Evaluation Summary
+
+The evaluation demonstrated that the core functionality of the artefact operates as intended.
+
+The Flask backend successfully provides eyewear catalogue data to the frontend, category filtering allows users to browse specific types of eyewear, and the virtual try-on feature successfully combines webcam input, MediaPipe facial landmark detection and Canvas rendering to position selected glasses on the user's face.
+
+The virtual glasses responded successfully to changes in face distance and sideways head tilt. The system also operated across the three tested laptops and two browsers.
+
+The main limitations were observed under poor lighting and at larger head rotations. These conditions reduced facial landmark reliability or caused visible misalignment of the 2D glasses overlay.
+
+The evaluation therefore demonstrates that the artefact provides a functional real-time virtual glasses try-on experience while also identifying areas that would require further development for a more robust commercial implementation.
+
+---
+
+## Known Limitations
+
+The current prototype has the following known limitations:
+
+- The virtual glasses are represented using a two-dimensional overlay rather than full 3D overlay.
+- The system does not currently perform full 3D head-pose estimation.
+- Alignment becomes less accurate when the user's head is turned further away from the frontal position.
+- Facial landmark detection becomes less reliable under poor lighting.
+- Performance depends partly on the processing capabilities of the user's device and browser.
+- The application currently supports one detected face at a time.
+- Testing has been limited to the devices and browsers listed above.
+- The current evaluation of glasses alignment is primarily visual rather than based on a numerical positioning-error measurement.
+
+---
+
 # Troubleshooting
 
-## Products Do Not Load
+### Products Do Not Load
 
-Check that:
-
-- The Flask backend is running.
-- The `.env.local` file exists in the project root.
-- The file contains:
+Ensure that the Flask backend is running and that `.env.local` exists in the project root with:
 
 ```env
 NEXT_PUBLIC_API_URL=http://127.0.0.1:5000/vto
@@ -404,128 +571,32 @@ If `.env.local` has been created or changed while the frontend is running, resta
 npm run dev
 ```
 
----
+### Webcam Does Not Open
 
-## `ModuleNotFoundError: No module named 'flask'`
-
-This means the required Python packages have not been installed in the current Python environment.
-
-Navigate to the backend directory and run:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-> **macOS:** If required, use:
-
-```bash
-python3 -m pip install -r requirements.txt
-```
-
-Then restart the backend.
-
----
-
-## Webcam Does Not Open
-
-Check that:
+Ensure that:
 
 - The device has a working webcam.
 - Camera access has been allowed in the browser.
 - Camera access is enabled for the browser in the operating system settings.
-- Another application is not preventing access to the webcam.
+- No other application is preventing access to the webcam.
 
 After changing camera permissions, refresh the page and reopen the virtual try-on feature.
 
----
+### MediaPipe Model Does Not Load
 
-## MediaPipe Model Does Not Load
-
-Ensure the following file exists:
+Ensure that the following model file exists:
 
 ```text
 public/models/face_landmarker.task
 ```
 
-The virtual try-on feature cannot perform facial landmark detection if the model file is missing.
+The virtual try-on feature cannot perform facial landmark detection if this file is missing.
 
----
+### Database Changes Are Not Visible
 
-## `npm` Is Not Recognised
+The application uses seeded product data. If `glasses_seed.json` is modified after the database has already been populated, the existing database may still contain the previous records.
 
-Check that Node.js has been installed correctly.
-
-Run:
-
-```bash
-node --version
-npm --version
-```
-
-If these commands are not recognised, install or reinstall Node.js using the official download link provided in the [Prerequisites](#prerequisites) section.
-
-After installation, close and reopen the terminal before trying again.
-
----
-
-## `python` Is Not Recognised
-
-### Windows
-
-Try:
-
-```bash
-py --version
-```
-
-If the Python launcher is available, dependencies can be installed using:
-
-```bash
-py -m pip install -r requirements.txt
-```
-
-and the backend can be started using:
-
-```bash
-py app.py
-```
-
-### macOS
-
-Try:
-
-```bash
-python3 --version
-```
-
-Then use:
-
-```bash
-python3 app.py
-```
-
----
-
-## Database Changes Are Not Visible
-
-The application uses seeded product data.
-
-If `glasses_seed.json` is modified after the database has already been populated, the existing records may still contain the previous product information.
-
-The database may therefore need to be cleared or reseeded before updated product information becomes visible.
-
----
-
-# Current Limitations
-
-The current prototype:
-
-- Uses a two-dimensional glasses overlay rather than 3D eyewear models.
-- Does not perform full 3D head-pose estimation.
-- May experience reduced facial tracking accuracy under poor lighting.
-- May experience some overlay misalignment during larger head movements.
-- Depends partly on the processing capabilities of the user's device and browser.
-- Is designed to detect one face at a time.
+The database may therefore need to be cleared or reseeded before the updated product information becomes visible.
 
 ---
 

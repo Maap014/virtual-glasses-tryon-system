@@ -8,6 +8,8 @@ import { Dropdown } from "../dropdown";
 import { useCart } from "@/components/context/cartContext";
 import { CartDropdown } from "@/components/cartDropdown";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import Image from "next/image";
+import logo from "@/assets/VGlasses_logo.png";
 
 export const MobileNavbar = ({
   navItems,
@@ -45,7 +47,11 @@ export const MobileNavbar = ({
         className="relative flex items-center justify-between"
       >
         <div className="flex gap-2 items-center">
-          <div className="w-8 h-8 bg-gray-300 rounded-full" />
+          <Image
+            src={logo}
+            alt={"VGlasses Logo"}
+            className="w-10 h-10  rounded-full"
+          />
           <p className="text-lg font-semibold">VGlasses</p>
         </div>
 

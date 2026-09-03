@@ -11,7 +11,7 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-
+# Initialize the database and seed it with initial data
 init_database()
 app.register_blueprint(api, url_prefix="/vto")
 

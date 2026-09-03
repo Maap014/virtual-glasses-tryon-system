@@ -48,6 +48,13 @@ export const ShopProducts = () => {
     setSelectedCategory(category);
   };
 
+  const closeVirtualTryOn = () => {
+    setSelectedProduct(null);
+    setIsOpen(false);
+    setCameraEnabled(false);
+    setCameraError(null);
+  };
+
   // an observer hook that watches when the product is in view so
   // bar can become sticky only when needed.
   useIntersectionObserver({
@@ -82,8 +89,10 @@ export const ShopProducts = () => {
       </div>
 
       {isLoading ? (
-        <div className="text-center py-10 text-foreground/70">
-          Loading products...
+        <div className="text-center py-20 text-foreground/70">
+          <div className="flex justify-center items-center w-full gap-3 h-full bg-white">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-primary-dark" />
+          </div>
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-10 text-red-600">
@@ -147,7 +156,10 @@ export const ShopProducts = () => {
       )}
       <section
         ref={experience}
-        className="mt-24 rounded-[40px] border border-border hover:border-[#3ab79a] transition-colors duration-200  p-8 768:p-14 flex flex-col 1024:flex-row items-center justify-between gap-10"
+        className={clsx(
+          isLoading && "mt-24",
+          " rounded-[40px] border border-border hover:border-[#3ab79a] transition-colors duration-200  p-8 768:p-14 flex flex-col 1024:flex-row items-center justify-between gap-10",
+        )}
       >
         <div>
           <p className="text-sm uppercase tracking-[0.3em] text-foreground/60">
@@ -170,11 +182,7 @@ export const ShopProducts = () => {
       </section>
       {isOpen && selectedProduct && (
         <Modal
-          onClick={() => {
-            setSelectedProduct(null);
-            setIsOpen(false);
-            setCameraEnabled(false);
-          }}
+          onClick={closeVirtualTryOn}
           className=" justify-center items-center flex"
         >
           {cameraError ? (
@@ -183,6 +191,10 @@ export const ShopProducts = () => {
             <VirtualTryon
               onCameraError={setCameraError}
               selectedProduct={selectedProduct}
+              onVtoError={(message) => {
+                toast.error(message);
+                closeVirtualTryOn();
+              }}
             />
           ) : null}
         </Modal>

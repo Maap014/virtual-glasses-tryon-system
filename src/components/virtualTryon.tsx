@@ -6,11 +6,13 @@ import Webcam from "react-webcam";
 
 interface VirtualTryOnProps {
   onCameraError: (message: string) => void;
+  onVtoError: (message: string) => void;
   selectedProduct: ProductType;
 }
 
 const VirtualTryon = ({
   onCameraError,
+  onVtoError,
   selectedProduct,
 }: VirtualTryOnProps) => {
   const webcamRef = useRef<Webcam | null>(null);
@@ -19,8 +21,12 @@ const VirtualTryon = ({
   const lastVideoTimeRef = useRef(-1);
 
   const [isMediaPipeReady, setIsMediaPipeReady] = useState(false);
+  const [isWebcamReady, setIsWebcamReady] = useState(false);
+  const [faceDetected, setFaceDetected] = useState<boolean | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const glassesImageRef = useRef<HTMLImageElement | null>(null);
+
+  const isVtoReady = isMediaPipeReady && isWebcamReady;
 
   useEffect(() => {
     const glassesImage = new Image();
@@ -35,8 +41,11 @@ const VirtualTryon = ({
 
     glassesImage.onerror = () => {
       console.error("Failed to load glasses image");
+      onVtoError(
+        "The selected glasses could not be loaded. Please try another product.",
+      );
     };
-  }, [selectedProduct.tryon_url]);
+  }, [selectedProduct.tryon_url, onVtoError]);
 
   useEffect(() => {
     const createFaceLandmarker = async () => {
@@ -61,6 +70,7 @@ const VirtualTryon = ({
 
     createFaceLandmarker().catch((error) => {
       console.error("Failed to load MediaPipe:", error);
+      onVtoError("Virtual try-on failed to load. Please try again.");
     });
 
     return () => {
@@ -118,8 +128,7 @@ const VirtualTryon = ({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (results.faceLandmarks.length > 0) {
-        // console.log("Face detected");
-
+        setFaceDetected(true);
         const landmarks = results.faceLandmarks[0];
 
         if (glassesImage) {
@@ -183,6 +192,7 @@ const VirtualTryon = ({
           const x = (1 - landmark.x) * canvas.width;
           const y = landmark.y * canvas.height;
 
+          // this used as a reference to draw the glasses on the face, but not visible to the user
           //  Start drawing a new dot
           ctx.beginPath();
 
@@ -194,12 +204,18 @@ const VirtualTryon = ({
           ctx.fill();
         });
       } else {
-        console.log("No face detected.");
+        // console.log("No face detected.");
+        setFaceDetected(false);
       }
     }
 
     animationFrameRef.current = requestAnimationFrame(predictWebcam);
   };
+  useEffect(() => {
+    if (isWebcamReady && isMediaPipeReady) {
+      predictWebcam();
+    }
+  }, [isWebcamReady, isMediaPipeReady]);
 
   return (
     <div className="relative aspect-4/3 w-full overflow-hidden rounded-3xl border border-border">
@@ -209,9 +225,7 @@ const VirtualTryon = ({
         mirrored
         videoConstraints={{ facingMode: "user" }}
         onUserMedia={() => {
-          if (isMediaPipeReady) {
-            predictWebcam();
-          }
+          setIsWebcamReady(true);
         }}
         onUserMediaError={() => {
           onCameraError(
@@ -225,6 +239,23 @@ const VirtualTryon = ({
         ref={canvasRef}
         className="pointer-events-none absolute inset-0 h-full w-full"
       />
+
+      {!isVtoReady && (
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 text-white">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-primary" />
+
+          <p className="mt-4 text-sm font-medium">
+            {!isWebcamReady
+              ? "Starting camera..."
+              : "Loading virtual try-on..."}
+          </p>
+        </div>
+      )}
+      {isVtoReady && faceDetected === false && (
+        <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/70 px-5 py-2 text-sm text-white">
+          No face detected. Please face the camera.
+        </div>
+      )}
     </div>
   );
 };

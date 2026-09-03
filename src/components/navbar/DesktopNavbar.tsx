@@ -9,6 +9,8 @@ import { useRef, useState } from "react";
 import { useCart } from "@/components/context/cartContext";
 import { CartDropdown } from "@/components/cartDropdown";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import Image from "next/image";
+import logo from "@/assets/VGlasses_logo.png";
 
 export const DesktopNavbar = ({
   navItems,
@@ -34,7 +36,11 @@ export const DesktopNavbar = ({
     <nav className={clsx("px-8 py-4 bg-white shadow-sm", className)}>
       <div className="flex items-center justify-between max-w-400 w-full mx-auto">
         <div className="flex gap-2 justify-between items-center">
-          <div className="w-10 h-10 bg-gray-300 rounded-full" />
+          <Image
+            src={logo}
+            alt={"VGlasses Logo"}
+            className="w-10 h-10  rounded-full"
+          />
           <p className="text-lg font-semibold">VGlasses</p>
         </div>
 
